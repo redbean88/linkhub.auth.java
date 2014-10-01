@@ -1,4 +1,8 @@
 linkhub.auth.java
 =================
 
-링크허브 SDK for JAVA
+Linkhub SDK for JAVA
+
+http://www.linkhub.co.kr
+
+Release to Maven Central is on working. Plz stay tuned. :)
