@@ -17,11 +17,10 @@ package kr.co.linkhub.auth;
 import java.util.List;
 
 /**
- * 
+ * Token Structure. built from TokenBuilder.
  * @author KimSeongjun
  * @see http://www.linkhub.co.kr
  * @version 1.0.0
- * Token Structure. built from TokenBuilder.
  */
 public class Token {
 

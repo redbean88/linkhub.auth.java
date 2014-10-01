@@ -18,13 +18,15 @@
   </licenses>
   
   <scm>
-  	<url>http://github.com/linkhub-sdk/linkhub.auth.java</url>
-  	<connection>http://github.com/linkhub-sdk/linkhub.auth.java.git</connection>
+  	<connection>scm:git:git@github.com/linkhub-sdk/linkhub.auth.java.git</connection>
+  	<url>git@github.com/linkhub-sdk/linkhub.auth.java.git</url>
   </scm>
   
   <developers>
     <developer>
       <id>linkhub</id>
+      <name>Kim Seongjun</name>
+      <email>support@linkhub.co.kr</email>
       <organization>Linkhub</organization>
       <organizationUrl>https://www.linkhub.co.kr</organizationUrl>
       <roles>
@@ -60,16 +62,34 @@
           <encoding>UTF-8</encoding>
         </configuration>
       </plugin>
-
+		<plugin>
+		  <groupId>org.apache.maven.plugins</groupId>
+		  <artifactId>maven-source-plugin</artifactId>
+		  <executions>
+		    <execution>
+		      <id>attach-sources</id>
+		      <goals>
+		        <goal>jar</goal>
+		      </goals>
+		    </execution>
+		  </executions>
+		</plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <version>2.9.1</version>
         <configuration>
           <excludePackageNames>*.test</excludePackageNames>
           <minmemory>128m</minmemory>
           <maxmemory>1024m</maxmemory>
         </configuration>
+        <executions>
+		    <execution>
+		      <id>attach-javadocs</id>
+		      <goals>
+		        <goal>jar</goal>
+		      </goals>
+		    </execution>
+		  </executions>
       </plugin>
     </plugins>
   </build>
