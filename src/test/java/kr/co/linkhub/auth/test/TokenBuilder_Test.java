@@ -104,5 +104,32 @@ public class TokenBuilder_Test {
 		System.out.println("파트너 잔여포인트 : " + String.valueOf(remainPoint));
 		
 	}
+	/*
+	 * [문제] 예금 만기 금액을 구하는 문제.
+ 
+		예금은 복리입니다. 예를 들어 10% 이율의 예금에 가입 100,000 만원 예치시, 1년 후에는 110,000원, 2년 후에는 121,000원입니다. 
+		본 예금은 이벤트가 있어서 예금을 든 후 부터 3의 배수인 해가 될 때에는 해당  연차를 5로 나눈 나머지 만큼 (예를 들어 12년 에는 2%, 3년에는 3%) 더 이율이 추가되어 지급됩니다.
+		 
+		위의 조건을 만족하는 함수를 작성해 주시면 되며, 함수는 재귀적(recursive)로 작성하시기 바랍니다.
+		 
+		함수 입력값: 원금, 이율(%), 기간(년)
+		출력값: 만기시 원금+이자의 합
+		
+	 */
+	@Test
+	public void GetInterest_TEST()
+	{
+		for(int year = 1 ; year <= 20; year++)
+			System.out.println(CalculateInterest(100000,10,year));
+	}
 
+	public long CalculateInterest(long Principal , int Rate , int year)
+    {
+		return (long)((year > 1 ?  this.CalculateInterest(Principal,Rate,year - 1) : Principal) * ( 1f + calculatedRatePercent(Rate,year)));
+    }
+   
+    public float calculatedRatePercent(int Rate , int Year) {
+    	return (float)(Rate + (Year % 3 == 0 ? Year % 5 : 0 )) / 100 ;
+    }
+    
 }
