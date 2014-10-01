@@ -114,7 +114,6 @@ public class TokenBuilder_Test {
 		 
 		함수 입력값: 원금, 이율(%), 기간(년)
 		출력값: 만기시 원금+이자의 합
-		
 	 */
 	@Test
 	public void GetInterest_TEST()
@@ -124,12 +123,11 @@ public class TokenBuilder_Test {
 	}
 
 	public long CalculateInterest(long Principal , int Rate , int year)
-    {
+	{
 		return (long)((year > 1 ?  this.CalculateInterest(Principal,Rate,year - 1) : Principal) * ( 1f + calculatedRatePercent(Rate,year)));
-    }
+	}
    
-    public float calculatedRatePercent(int Rate , int Year) {
-    	return (float)(Rate + (Year % 3 == 0 ? Year % 5 : 0 )) / 100 ;
-    }
-    
+	public float calculatedRatePercent(int Rate , int Year) {
+		return (float)(Rate + (Year % 3 == 0 ? Year % 5 : 0 )) / 100 ;
+	}
 }
