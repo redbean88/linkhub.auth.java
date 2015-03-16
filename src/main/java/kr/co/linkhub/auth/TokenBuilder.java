@@ -40,7 +40,7 @@ import com.google.gson.Gson;
  * Linkhub TokenBuilder class.
  * @author KimSeongjun
  * @see http://www.linkhub.co.kr
- * @version 1.0.0
+ * @version 1.0.1
  */
 public class TokenBuilder {
 
@@ -100,6 +100,25 @@ public class TokenBuilder {
     
     /**
      * 
+     * @return Token
+     * @throws LinkhubException
+     */
+    public Token build() throws LinkhubException {
+    	return build(null,null);
+    }
+    
+    /**
+     * 
+     * @return Token
+     * @param forwardedIP
+     * @throws LinkhubException
+     */
+    public Token buildWithIP(String ForwardedIP) throws LinkhubException {
+    	return build(null,ForwardedIP);
+    }
+    
+    /**
+     * 
      * @param AccessID
      * @return Token
      * @throws LinkhubException
@@ -118,7 +137,6 @@ public class TokenBuilder {
     public Token build(String AccessID, String forwardedIP) throws LinkhubException {
     	
     	if(_recentServiceID == null || _recentServiceID.isEmpty()) throw new LinkhubException(-99999999,"서비스아이디가 입력되지 않았습니다.");
-    	if(AccessID == null || AccessID.isEmpty()) throw new LinkhubException(-99999999,"AccessID가 입력되지 않았습니다.");
     	
     	HttpURLConnection httpURLConnection;
     	String URI = "/" +  _recentServiceID + "/Token";
@@ -143,10 +161,10 @@ public class TokenBuilder {
 		signTarget += md5Base64(btPostData)  + "\n";
 
 		signTarget += invokeTime + "\n";
-		signTarget += APIVersion + "\n";
 		if(forwardedIP != null && forwardedIP.isEmpty() == false) {
 			signTarget += forwardedIP + "\n";
 		}
+		signTarget += APIVersion + "\n";
 		signTarget += URI;
 				
 		String Signature = base64Encode(HMacSha1(base64Decode(getSecretKey()), signTarget.getBytes(Charset.forName("UTF-8"))));

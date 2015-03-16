@@ -20,7 +20,7 @@ import java.util.List;
  * Token Structure. built from TokenBuilder.
  * @author KimSeongjun
  * @see http://www.linkhub.co.kr
- * @version 1.0.0
+ * @version 1.0.1
  */
 public class Token {
 

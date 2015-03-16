@@ -14,7 +14,7 @@ import org.junit.Test;
 public class TokenBuilder_Test {
 	
 	private final String LinkID = "TESTER";
-	private final String SecretKey = "RTY69sOhR4AtjogjHIhnArYoyRlrFlIXc2inDJk6x2M=";
+	private final String SecretKey = "isP3teXwNQMvfJ2xONGK23sH3F0GdiMEkWdtlbJOAQY=";
 	
 	@Test
 	public void Build_Success_Test() throws LinkhubException {
@@ -33,6 +33,30 @@ public class TokenBuilder_Test {
 		assertEquals("TESTER", token.getLinkID());
 		
 		token = tokenBuilder.build("4108600477");
+		
+		assertNotNull(token);
+		
+		assertNotNull(token.getSession_token());
+		
+		assertEquals("TESTER", token.getLinkID());
+	}
+	
+	@Test
+	public void Build_Partner_Success_Test() throws LinkhubException {
+		
+		TokenBuilder tokenBuilder = TokenBuilder.getInstance(LinkID, SecretKey)
+									.ServiceID("JUSOLINK_DEV")
+									.addScope("200");
+	
+		Token token = tokenBuilder.build();
+		
+		assertNotNull(token);
+		
+		assertNotNull(token.getSession_token());
+		
+		assertEquals("TESTER", token.getLinkID());
+		
+		token = tokenBuilder.buildWithIP("123.123.123.123");
 		
 		assertNotNull(token);
 		
