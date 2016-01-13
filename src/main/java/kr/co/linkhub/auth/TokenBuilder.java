@@ -24,11 +24,8 @@ import java.net.URL;
 import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.TimeZone;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -40,7 +37,7 @@ import com.google.gson.Gson;
  * Linkhub TokenBuilder class.
  * @author KimSeongjun
  * @see http://www.linkhub.co.kr
- * @version 1.0.1
+ * @version 1.0.2
  */
 public class TokenBuilder {
 
@@ -155,7 +152,7 @@ public class TokenBuilder {
 		String PostData = _gsonParser.toJson(request);
 		byte[] btPostData = PostData.getBytes(Charset.forName("UTF-8"));
 		
-		String invokeTime = getUTCTimeString(new Date());
+		String invokeTime = getTime();
 				
 		String signTarget = "POST\n";
 		signTarget += md5Base64(btPostData)  + "\n";
@@ -319,6 +316,50 @@ public class TokenBuilder {
     	return _gsonParser.fromJson(Result, PointResult.class).getRemainPoint();
     }
     
+    /**
+     * 
+     * @return API Server UTCTime
+     * @throws LinkhubException
+     */
+    public String getTime() throws LinkhubException {    	
+    	HttpURLConnection httpURLConnection;
+    	String URI = "/Time";
+		try {
+			URL url = new URL(ServiceURL + URI);
+			httpURLConnection = (HttpURLConnection) url.openConnection();
+		} catch (Exception e) {
+			throw new LinkhubException(-99999999, "링크허브 서버 접속 실패",e);
+		}
+		
+		String Result = "";
+		
+		try {
+			InputStream input = httpURLConnection.getInputStream();
+			Result = fromStream(input);
+			input.close();
+			
+		} catch (IOException e) {
+			
+			Error error = null;
+			
+			try
+			{
+				InputStream input = httpURLConnection.getErrorStream();
+				Result = fromStream(input);
+				input.close();
+				error = _gsonParser.fromJson(Result, Error.class);
+			}
+			catch(Exception E) {}
+			
+			if(error == null)
+				throw new LinkhubException(-99999999, "Fail to receive UTC Time from Server.",e);
+			else
+				throw new LinkhubException(error.code,error.message);
+		}
+		
+    	return (String) Result;
+    }
+    
     private String getLinkID() throws LinkhubException {
     	if(_LinkID == null || _LinkID.isEmpty()) throw new LinkhubException(-99999999,"링크아이디가 입력되지 않았습니다.");
     	return _LinkID;
@@ -361,12 +402,6 @@ public class TokenBuilder {
     		throw new LinkhubException(-99999999, "Fail to Calculate HMAC-SHA1, Please check your SecretKey.",e);
     	}
 	}
-    
-    private static String getUTCTimeString(Date target) {
-    	SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss'Z'");
-		format.setTimeZone(TimeZone.getTimeZone("UTC"));
-		return format.format(target);
-    }
     
     private static String fromStream(InputStream input) throws IOException {
     	

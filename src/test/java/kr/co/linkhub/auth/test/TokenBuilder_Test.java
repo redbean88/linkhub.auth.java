@@ -3,6 +3,7 @@ package kr.co.linkhub.auth.test;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import kr.co.linkhub.auth.LinkhubException;
@@ -14,7 +15,7 @@ import org.junit.Test;
 public class TokenBuilder_Test {
 	
 	private final String LinkID = "TESTER";
-	private final String SecretKey = "isP3teXwNQMvfJ2xONGK23sH3F0GdiMEkWdtlbJOAQY=";
+	private final String SecretKey = "SwWxqU+0TErBXy/9TVjIPEnI0VTUMMSQZtJf3Ed8q3I=";
 	
 	@Test
 	public void Build_Success_Test() throws LinkhubException {
@@ -81,7 +82,7 @@ public class TokenBuilder_Test {
 		
 		assertEquals("TESTER", token.getLinkID());
 	}
-	
+
 	@Test
 	public void GetBalance_Success_Test() throws LinkhubException {
 		TokenBuilder tokenBuilder = TokenBuilder.getInstance(LinkID, SecretKey);
@@ -90,7 +91,7 @@ public class TokenBuilder_Test {
 						.ServiceID("POPBILL_TEST")
 						.addScope("member")
 						.addScope("110")
-						.build("1231212312");
+						.build("1234567890");
 		
 		assertNotNull(token);
 		
@@ -115,7 +116,7 @@ public class TokenBuilder_Test {
 							.ServiceID("POPBILL_TEST")
 							.addScope("member")
 							.addScope("110")
-							.build("1231212312");
+							.build("1234567890");
 		
 		assertNotNull(token);
 		
@@ -128,6 +129,33 @@ public class TokenBuilder_Test {
 		System.out.println("파트너 잔여포인트 : " + String.valueOf(remainPoint));
 		
 	}
+	
+	@Test
+	public void GetTime_Success_Test() throws LinkhubException {
+		TokenBuilder tokenBuilder = TokenBuilder.getInstance(LinkID, SecretKey);
+		
+		List<String> scopes = new ArrayList<String>();
+		scopes.add("member");
+		
+		Token token = tokenBuilder
+							.ServiceID("POPBILL_TEST")
+							.addScope("member")
+							.addScope("110")
+							.build("1234567890");
+		
+		assertNotNull(token);
+		
+		assertNotNull(token.getSession_token());
+		
+		String UTCTime = tokenBuilder.getTime();
+		
+		assertNotNull(UTCTime);
+		
+		System.out.println("Response UTCTime : " + UTCTime);
+		
+	}
+	
+	
 	/*
 	 * [문제] 예금 만기 금액을 구하는 문제.
  
