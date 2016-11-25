@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2014 innopost.com, Inc. or its affiliates. All Rights Reserved.
+ * Copyright 2006-2014 linkhub.co.kr, Inc. or its affiliates. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License").
  * You may not use this file except in compliance with the License.
@@ -175,41 +175,75 @@ public class TokenBuilder {
 		httpURLConnection.setRequestProperty("Content-Type","application/json; charset=utf8");
 		httpURLConnection.setRequestProperty("Content-Length",String.valueOf(btPostData.length));
 		
+		DataOutputStream output = null;
+		
 		try {
 			httpURLConnection.setRequestMethod("POST");
 			httpURLConnection.setUseCaches(false);
 			httpURLConnection.setDoOutput(true);
 			
-			DataOutputStream output = new DataOutputStream(httpURLConnection.getOutputStream());
+			output = new DataOutputStream(httpURLConnection.getOutputStream());
 			output.write(btPostData);
 			output.flush();
 			output.close();
-		} catch (Exception e) {throw new LinkhubException(-99999999, "Fail to POST data to Server.",e);}
+		} catch (Exception e) {
+			throw new LinkhubException(-99999999, "Fail to POST data to Server.",e);
+		} finally {			
+			if (output != null) {
+				try {
+					output.close();
+				} catch (IOException e1) {
+					throw new LinkhubException(-99999999, 
+							"Linkhub TokenBuilder build func output stream close exception.",e1);
+				}
+			}
+		}
 		
 		String Result = "";
+		InputStream input = null;
 		
 		try {
-			InputStream input = httpURLConnection.getInputStream();
+			input = httpURLConnection.getInputStream();
 			Result = fromStream(input);
 			input.close();
 			
 		} catch (IOException e) {
 			
 			Error error = null;
-			
+			InputStream is = null;
 			try
 			{
-				InputStream input = httpURLConnection.getErrorStream();
-				Result = fromStream(input);
-				input.close();
+				is = httpURLConnection.getErrorStream();
+				Result = fromStream(is);
+				
 				error = _gsonParser.fromJson(Result, Error.class);
 			}
-			catch(Exception E) {}
+			catch(Exception E) {
+				
+			} finally {
+				if (is != null) {
+					try {
+						is.close();
+					} catch (IOException e3) {
+						throw new LinkhubException(-99999999, 
+								"Linkhub TokenBuilder build func Error inputstream close exception.",e3);
+					}
+				}
+			}
 			
 			if(error == null)
 				throw new LinkhubException(-99999999, "Fail to receive data from Server.",e);
 			else
 				throw new LinkhubException(error.code,error.message);
+		} finally {
+			if (input != null) {
+				try {
+					input.close();
+				} catch (IOException e1) {
+					throw new LinkhubException(-99999999, 
+							"Linkhub TokenBuilder build func input stream close exception.",e1);
+				}
+			}
 		}
 		
     	return _gsonParser.fromJson(Result, Token.class);
@@ -238,29 +272,47 @@ public class TokenBuilder {
 		httpURLConnection.setRequestProperty("Authorization","Bearer " + BearerToken);
 		
 		String Result = "";
+		InputStream input = null;
 		
 		try {
-			InputStream input = httpURLConnection.getInputStream();
-			Result = fromStream(input);
-			input.close();
-			
+			input = httpURLConnection.getInputStream();
+			Result = fromStream(input);			
 		} catch (IOException e) {
 			
 			Error error = null;
+			InputStream is = null;
 			
-			try
-			{
-				InputStream input = httpURLConnection.getErrorStream();
-				Result = fromStream(input);
-				input.close();
+			try	{
+				is = httpURLConnection.getErrorStream();
+				Result = fromStream(input);				
 				error = _gsonParser.fromJson(Result, Error.class);
 			}
-			catch(Exception E) {}
+			catch(Exception E) {
+				
+			} finally {
+				if (is != null){
+					try {
+						is.close();
+					} catch (IOException e1) {
+						throw new LinkhubException(-99999999, 
+								"Linkhub getBalance func Error inputstream close exception.",e);
+					}
+				}
+			}
 			
-			if(error == null)
+			if (error == null)
 				throw new LinkhubException(-99999999, "Fail to receive data from Server.",e);
 			else
 				throw new LinkhubException(error.code,error.message);
+		} finally {
+			if (input != null){
+				try {
+					input.close();
+				} catch (IOException e) {
+					throw new LinkhubException(-99999999, 
+							"Linkhub getBalance func input stream close exception.",e);
+				}
+			}
 		}
 		
     	return _gsonParser.fromJson(Result, PointResult.class).getRemainPoint();
@@ -288,29 +340,48 @@ public class TokenBuilder {
 		httpURLConnection.setRequestProperty("Authorization","Bearer " + BearerToken);
 		
 		String Result = "";
+		InputStream input = null;
 		
 		try {
-			InputStream input = httpURLConnection.getInputStream();
+			input = httpURLConnection.getInputStream();
 			Result = fromStream(input);
-			input.close();
-			
 		} catch (IOException e) {
 			
 			Error error = null;
+			InputStream is = null;
 			
-			try
-			{
-				InputStream input = httpURLConnection.getErrorStream();
+			try	{
+				is = httpURLConnection.getErrorStream();
 				Result = fromStream(input);
-				input.close();
+				
 				error = _gsonParser.fromJson(Result, Error.class);
 			}
-			catch(Exception E) {}
+			catch(Exception E) {
+				
+			} finally {
+				if (is != null){
+					try {
+						is.close();
+					} catch (IOException e1) {
+						throw new LinkhubException(-99999999, 
+								"Linkhub getPartnerBalance func Error inputstream close exception.",e);
+					}
+				}
+			}
 			
-			if(error == null)
+			if (error == null)
 				throw new LinkhubException(-99999999, "Fail to receive data from Server.",e);
 			else
 				throw new LinkhubException(error.code,error.message);
+		} finally {
+			if (input != null){
+				try {
+					input.close();
+				} catch (IOException e) {
+					throw new LinkhubException(-99999999, 
+							"Linkhub getPartnerBalance func input stream close exception.",e);
+				}
+			}
 		}
 		
     	return _gsonParser.fromJson(Result, PointResult.class).getRemainPoint();
@@ -332,29 +403,48 @@ public class TokenBuilder {
 		}
 		
 		String Result = "";
+		InputStream input = null;
 		
 		try {
-			InputStream input = httpURLConnection.getInputStream();
+			input = httpURLConnection.getInputStream();
 			Result = fromStream(input);
-			input.close();
 			
 		} catch (IOException e) {
 			
 			Error error = null;
-			
-			try
-			{
-				InputStream input = httpURLConnection.getErrorStream();
-				Result = fromStream(input);
-				input.close();
+			InputStream is = null;
+			try	{
+				is = httpURLConnection.getErrorStream();
+				Result = fromStream(is);
 				error = _gsonParser.fromJson(Result, Error.class);
 			}
-			catch(Exception E) {}
+			catch(Exception E) {
+				
+			} finally {
+				if (is != null){
+					try {
+						is.close();
+					} catch (IOException e1) {
+						throw new LinkhubException(-99999999, 
+								"Linkhub getTime func inputstream close exception.",e);
+					}
+				}
+			}
 			
 			if(error == null)
 				throw new LinkhubException(-99999999, "Fail to receive UTC Time from Server.",e);
 			else
 				throw new LinkhubException(error.code,error.message);
+		} finally {
+			if (input != null){
+				try {
+					input.close();
+				} catch (IOException e) {
+					throw new LinkhubException(-99999999, 
+							"Linkhub getTime func inputstream close exception.",e);
+				}
+			}
+			
 		}
 		
     	return (String) Result;
@@ -403,19 +493,34 @@ public class TokenBuilder {
     	}
 	}
     
-    private static String fromStream(InputStream input) throws IOException {
+    private static String fromStream(InputStream input) throws LinkhubException {
+    	InputStreamReader is = null;
+    	BufferedReader br = null;
+    	StringBuilder sb = null;
     	
-    	InputStreamReader is = new InputStreamReader(input,Charset.forName("UTF-8"));
-		StringBuilder sb= new StringBuilder();
-		BufferedReader br = new BufferedReader(is);
-		
-		String read = br.readLine();
+    	try {
+    		is = new InputStreamReader(input,Charset.forName("UTF-8"));
+    		sb = new StringBuilder();
+    		br = new BufferedReader(is);
+    		
+    		String read = br.readLine();
 
-		while(read != null) {
-		    sb.append(read);
-		    read = br.readLine();
-		}
-		
+    		while(read != null) {
+    		    sb.append(read);
+    		    read = br.readLine();
+    		}
+    	} catch (IOException e){
+    		
+    	} finally {
+    		try {
+    			if (br != null) br.close();
+    			if (is != null) is.close();
+    		} catch (IOException e){
+    			throw new LinkhubException(-99999999, 
+						"Linkhub fromStream func inputStream close exception.",e);
+    		}
+    	}
+    	
 		return sb.toString();
 	}
     
