@@ -185,7 +185,6 @@ public class TokenBuilder {
 			output = new DataOutputStream(httpURLConnection.getOutputStream());
 			output.write(btPostData);
 			output.flush();
-			output.close();
 		} catch (Exception e) {
 			throw new LinkhubException(-99999999, "Fail to POST data to Server.",e);
 		} finally {			
@@ -205,14 +204,11 @@ public class TokenBuilder {
 		try {
 			input = httpURLConnection.getInputStream();
 			Result = fromStream(input);
-			input.close();
-			
 		} catch (IOException e) {
 			
 			Error error = null;
 			InputStream is = null;
-			try
-			{
+			try {
 				is = httpURLConnection.getErrorStream();
 				Result = fromStream(is);
 				
@@ -286,8 +282,7 @@ public class TokenBuilder {
 				is = httpURLConnection.getErrorStream();
 				Result = fromStream(input);				
 				error = _gsonParser.fromJson(Result, Error.class);
-			}
-			catch(Exception E) {
+			} catch(Exception E) {
 				
 			} finally {
 				if (is != null){
@@ -353,10 +348,8 @@ public class TokenBuilder {
 			try	{
 				is = httpURLConnection.getErrorStream();
 				Result = fromStream(input);
-				
 				error = _gsonParser.fromJson(Result, Error.class);
-			}
-			catch(Exception E) {
+			} catch(Exception E) {
 				
 			} finally {
 				if (is != null){
