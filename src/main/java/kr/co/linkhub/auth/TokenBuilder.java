@@ -280,7 +280,7 @@ public class TokenBuilder {
 			
 			try	{
 				is = httpURLConnection.getErrorStream();
-				Result = fromStream(input);				
+				Result = fromStream(is);				
 				error = _gsonParser.fromJson(Result, Error.class);
 			} catch(Exception E) {
 				
