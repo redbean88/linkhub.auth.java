@@ -37,7 +37,7 @@ import com.google.gson.Gson;
  * Linkhub TokenBuilder class.
  * @author KimSeongjun
  * @see http://www.linkhub.co.kr
- * @version 1.0.2
+ * @version 1.0.3
  */
 public class TokenBuilder {
 
@@ -205,16 +205,16 @@ public class TokenBuilder {
 			input = httpURLConnection.getInputStream();
 			Result = fromStream(input);
 		} catch (IOException e) {
-			
 			Error error = null;
 			InputStream is = null;
+			
 			try {
 				is = httpURLConnection.getErrorStream();
 				Result = fromStream(is);
 				
 				error = _gsonParser.fromJson(Result, Error.class);
 			}
-			catch(Exception E) {
+			catch (Exception E) {
 				
 			} finally {
 				if (is != null) {
@@ -305,7 +305,7 @@ public class TokenBuilder {
 					input.close();
 				} catch (IOException e) {
 					throw new LinkhubException(-99999999, 
-							"Linkhub getBalance func input stream close exception.",e);
+							"Linkhub getBalance func inputstream close exception.",e);
 				}
 			}
 		}
@@ -347,7 +347,7 @@ public class TokenBuilder {
 			
 			try	{
 				is = httpURLConnection.getErrorStream();
-				Result = fromStream(input);
+				Result = fromStream(is);
 				error = _gsonParser.fromJson(Result, Error.class);
 			} catch(Exception E) {
 				

@@ -3,7 +3,6 @@ package kr.co.linkhub.auth.test;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import kr.co.linkhub.auth.LinkhubException;
@@ -116,7 +115,7 @@ public class TokenBuilder_Test {
 							.ServiceID("POPBILL_TEST")
 							.addScope("member")
 							.addScope("110")
-							.build("1234567890");
+							.build("123457890");
 		
 		assertNotNull(token);
 		
