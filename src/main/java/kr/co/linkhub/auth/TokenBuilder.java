@@ -37,7 +37,10 @@ import com.google.gson.Gson;
  * Linkhub TokenBuilder class.
  * @author KimSeongjun
  * @see http://www.linkhub.co.kr
- * @version 1.0.3
+ * @version 1.1.0
+ * 
+ * Update Log
+ * (2017/08/25) - GetPartnerURL API added
  */
 public class TokenBuilder {
 
@@ -380,6 +383,73 @@ public class TokenBuilder {
     	return _gsonParser.fromJson(Result, PointResult.class).getRemainPoint();
     }
     
+    
+    /**
+     * 
+     * @param BearerToken
+     * @param TOGO
+     * @return
+     * @throws LinkhubException
+     */
+    public String getPartnerURL(String BearerToken, String TOGO) throws LinkhubException {    	
+    	HttpURLConnection httpURLConnection;
+    	String Result = "";
+		InputStream input = null;
+		
+    	String URI = "/" +  _recentServiceID + "/URL?TG=" + TOGO;
+    	
+		try {
+			URL url = new URL(ServiceURL + URI);
+			httpURLConnection = (HttpURLConnection) url.openConnection();
+		} catch (Exception e) {
+			throw new LinkhubException(-99999999, "링크허브 서버 접속 실패",e);
+		}
+		
+		httpURLConnection.setRequestProperty("Authorization","Bearer " + BearerToken);
+		
+		try {
+			input = httpURLConnection.getInputStream();
+			Result = fromStream(input);
+		} catch (IOException e) {
+			Error error = null;
+			InputStream is = null;
+
+			try	{
+				is = httpURLConnection.getErrorStream();
+				Result = fromStream(is);
+				error = _gsonParser.fromJson(Result, Error.class);
+			}
+			catch(Exception E) {
+				
+			} finally {
+				if (is != null){
+					try {
+						is.close();
+					} catch (IOException e1) {
+						throw new LinkhubException(-99999999, 
+								"Linkhub getPartnerURL func inputstream close exception.",e);
+					}
+				}
+			}
+			
+			if(error == null)
+				throw new LinkhubException(-99999999, "Fail to receive getPartnerURL from Server.",e);
+			else
+				throw new LinkhubException(error.code,error.message);
+		} finally {
+			if (input != null){
+				try {
+					input.close();
+				} catch (IOException e) {
+					throw new LinkhubException(-99999999, 
+							"Linkhub getPartnerURL func inputstream close exception.",e);
+				}
+			}
+		}
+		
+		return _gsonParser.fromJson(Result, URLResult.class).getURL();
+    }
+    
     /**
      * 
      * @return API Server UTCTime
@@ -517,12 +587,24 @@ public class TokenBuilder {
 		return sb.toString();
 	}
     
+    protected class URLResponse{
+    	public String url;
+    }
+    
     class PointResult {
     	private double remainPoint;
 
 		public double getRemainPoint() {
 			return remainPoint;
 		}
+    }
+    
+    class URLResult {
+    	private String url;
+    	
+    	public String getURL(){
+    		return url;
+    	}
     }
     
     class Error {

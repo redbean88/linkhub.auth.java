@@ -3,6 +3,7 @@ package kr.co.linkhub.auth.test;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import kr.co.linkhub.auth.LinkhubException;
@@ -115,7 +116,7 @@ public class TokenBuilder_Test {
 							.ServiceID("POPBILL_TEST")
 							.addScope("member")
 							.addScope("110")
-							.build("123457890");
+							.build("1234567890");
 		
 		assertNotNull(token);
 		
@@ -153,7 +154,28 @@ public class TokenBuilder_Test {
 		System.out.println("Response UTCTime : " + UTCTime);
 		
 	}
-	
+
+	@Test
+	public void GetPartnerURL_Success_Test() throws LinkhubException {
+		TokenBuilder tokenBuilder = TokenBuilder.getInstance(LinkID, SecretKey);
+		
+		Token token = tokenBuilder
+						.ServiceID("POPBILL_TEST")
+						.addScope("member")
+						.addScope("110")
+						.build("1234567890");
+		
+		assertNotNull(token);
+		
+		assertNotNull(token.getSession_token());
+		
+		String url = tokenBuilder.getPartnerURL(token.getSession_token(), "LOGIN");
+		
+		assertNotNull(url);
+		
+		System.out.println(url);
+		
+	}
 	
 	/*
 	 * [문제] 예금 만기 금액을 구하는 문제.

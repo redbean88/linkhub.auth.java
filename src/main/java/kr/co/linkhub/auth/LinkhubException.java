@@ -18,7 +18,7 @@ package kr.co.linkhub.auth;
  * Linkhub Operation Exception.
  * @author KimSeongjun
  * @see http://www.linkhub.co.kr
- * @version 1.0.3
+ * @version 1.1.0
  */
 public class LinkhubException extends Exception {
 	private static final long serialVersionUID = 1L;
