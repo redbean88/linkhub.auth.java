@@ -587,10 +587,6 @@ public class TokenBuilder {
 		return sb.toString();
 	}
     
-    protected class URLResponse{
-    	public String url;
-    }
-    
     class PointResult {
     	private double remainPoint;
 
