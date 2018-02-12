@@ -46,8 +46,9 @@ public class TokenBuilder {
 
 	private static final String HMAC_SHA1_ALGORITHM = "HmacSHA1";
 	private static final String APIVersion = "1.0";
-    private static final String ServiceURL = "https://auth.linkhub.co.kr";
+	private static final String DefaultServiceURL = "https://auth.linkhub.co.kr";
     
+	private String _ServiceURL;
     private String _LinkID;
     private String _SecretKey;
     private Gson _gsonParser;
@@ -73,9 +74,16 @@ public class TokenBuilder {
     	}
     	_singleTone._LinkID = LinkID;
     	_singleTone._SecretKey = SecretKey;
+    	_singleTone._ServiceURL = DefaultServiceURL;
     	return _singleTone;
     }
     
+    /**
+     * @param Target 서비스 URL를 변경합니다. Proxy환경에서 사용합니다.
+     */
+    public void setServiceURL(String URL) {
+    	this._ServiceURL = URL;
+    }
     /**
      * 
      * @param ServiceID 서비스아이디
@@ -142,7 +150,7 @@ public class TokenBuilder {
     	String URI = "/" +  _recentServiceID + "/Token";
     	
 		try {
-			URL url = new URL(ServiceURL + URI);
+			URL url = new URL(_ServiceURL + URI);
 			httpURLConnection = (HttpURLConnection) url.openConnection();
 		} catch (Exception e) {
 			throw new LinkhubException(-99999999, "링크허브 서버 접속 실패",e);
@@ -262,7 +270,7 @@ public class TokenBuilder {
     	HttpURLConnection httpURLConnection;
     	String URI = "/" +  _recentServiceID + "/Point";
 		try {
-			URL url = new URL(ServiceURL + URI);
+			URL url = new URL(_ServiceURL + URI);
 			httpURLConnection = (HttpURLConnection) url.openConnection();
 		} catch (Exception e) {
 			throw new LinkhubException(-99999999, "링크허브 서버 접속 실패",e);
@@ -329,7 +337,7 @@ public class TokenBuilder {
     	HttpURLConnection httpURLConnection;
     	String URI = "/" +  _recentServiceID + "/PartnerPoint";
 		try {
-			URL url = new URL(ServiceURL + URI);
+			URL url = new URL(_ServiceURL + URI);
 			httpURLConnection = (HttpURLConnection) url.openConnection();
 		} catch (Exception e) {
 			throw new LinkhubException(-99999999, "링크허브 서버 접속 실패",e);
@@ -399,7 +407,7 @@ public class TokenBuilder {
     	String URI = "/" +  _recentServiceID + "/URL?TG=" + TOGO;
     	
 		try {
-			URL url = new URL(ServiceURL + URI);
+			URL url = new URL(_ServiceURL + URI);
 			httpURLConnection = (HttpURLConnection) url.openConnection();
 		} catch (Exception e) {
 			throw new LinkhubException(-99999999, "링크허브 서버 접속 실패",e);
@@ -459,7 +467,7 @@ public class TokenBuilder {
     	HttpURLConnection httpURLConnection;
     	String URI = "/Time";
 		try {
-			URL url = new URL(ServiceURL + URI);
+			URL url = new URL(_ServiceURL + URI);
 			httpURLConnection = (HttpURLConnection) url.openConnection();
 		} catch (Exception e) {
 			throw new LinkhubException(-99999999, "링크허브 서버 접속 실패",e);
