@@ -68,6 +68,7 @@ public class TokenBuilder {
      * @param SecretKey 비밀키
      * @return this for method chaining.
      */
+    @Deprecated
     public static TokenBuilder getInstance(String LinkID,String SecretKey) {
     	if(_singleTone == null) {
     		_singleTone = new TokenBuilder();
@@ -75,6 +76,17 @@ public class TokenBuilder {
     	_singleTone._LinkID = LinkID;
     	_singleTone._SecretKey = SecretKey;
     	_singleTone._ServiceURL = DefaultServiceURL;
+    	return _singleTone;
+    }
+    
+    public static TokenBuilder newInstance(String LinkID,String SecretKey) {
+    	
+    	TokenBuilder _singleTone = new TokenBuilder();
+    
+    	_singleTone._LinkID = LinkID;
+    	_singleTone._SecretKey = SecretKey;
+    	_singleTone._ServiceURL = DefaultServiceURL;
+    	
     	return _singleTone;
     }
     
