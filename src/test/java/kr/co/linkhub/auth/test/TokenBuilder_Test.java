@@ -22,11 +22,11 @@ public class TokenBuilder_Test {
 	public void Build_Success_Test() throws LinkhubException {
 		
 		TokenBuilder tokenBuilder = TokenBuilder.getInstance(LinkID, SecretKey)
-									.ServiceID("POPBILL_TEST")
+									.ServiceID("POPBILL")
 									.addScope("member")
 									.addScope("110");
 	
-		Token token = tokenBuilder.build("1231212312");
+		Token token = tokenBuilder.build("1234567890");
 		
 		assertNotNull(token);
 		
@@ -34,10 +34,11 @@ public class TokenBuilder_Test {
 		
 		assertEquals("TESTER", token.getLinkID());
 		
-		token = tokenBuilder.build("4108600477");
+		token = tokenBuilder.build("1234567890");
 		
 		assertNotNull(token);
 		
+		System.out.println(token.getSession_token());
 		assertNotNull(token.getSession_token());
 		
 		assertEquals("TESTER", token.getLinkID());

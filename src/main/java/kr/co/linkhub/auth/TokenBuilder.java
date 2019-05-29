@@ -26,6 +26,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.zip.GZIPInputStream;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -37,7 +38,7 @@ import com.google.gson.Gson;
  * Linkhub TokenBuilder class.
  * @author KimSeongjun
  * @see http://www.linkhub.co.kr
- * @version 1.1.0
+ * @version 1.2.1
  * 
  * Update Log
  * (2017/08/25) - GetPartnerURL API added
@@ -226,7 +227,13 @@ public class TokenBuilder {
 		
 		try {
 			input = httpURLConnection.getInputStream();
-			Result = fromStream(input);
+			
+			if (null != httpURLConnection.getContentEncoding() && httpURLConnection.getContentEncoding().equals("gzip")) {
+				Result = fromGzipStream(input);
+			} else {
+				Result = fromStream(input);
+			}
+			
 		} catch (IOException e) {
 			Error error = null;
 			InputStream is = null;
@@ -295,7 +302,13 @@ public class TokenBuilder {
 		
 		try {
 			input = httpURLConnection.getInputStream();
-			Result = fromStream(input);			
+				
+			if (null != httpURLConnection.getContentEncoding() && httpURLConnection.getContentEncoding().equals("gzip")) {
+				Result = fromGzipStream(input);
+			} else {
+				Result = fromStream(input);
+			}
+			
 		} catch (IOException e) {
 			
 			Error error = null;
@@ -362,7 +375,11 @@ public class TokenBuilder {
 		
 		try {
 			input = httpURLConnection.getInputStream();
-			Result = fromStream(input);
+			if (null != httpURLConnection.getContentEncoding() && httpURLConnection.getContentEncoding().equals("gzip")) {
+				Result = fromGzipStream(input);
+			} else {
+				Result = fromStream(input);
+			}
 		} catch (IOException e) {
 			
 			Error error = null;
@@ -429,7 +446,12 @@ public class TokenBuilder {
 		
 		try {
 			input = httpURLConnection.getInputStream();
-			Result = fromStream(input);
+			
+			if (null != httpURLConnection.getContentEncoding() && httpURLConnection.getContentEncoding().equals("gzip")) {
+				Result = fromGzipStream(input);
+			} else {
+				Result = fromStream(input);
+			}
 		} catch (IOException e) {
 			Error error = null;
 			InputStream is = null;
@@ -490,7 +512,11 @@ public class TokenBuilder {
 		
 		try {
 			input = httpURLConnection.getInputStream();
-			Result = fromStream(input);
+			if (null != httpURLConnection.getContentEncoding() && httpURLConnection.getContentEncoding().equals("gzip")) {
+				Result = fromGzipStream(input);
+			} else {
+				Result = fromStream(input);
+			}
 			
 		} catch (IOException e) {
 			
@@ -607,6 +633,41 @@ public class TokenBuilder {
 		return sb.toString();
 	}
     
+	private static String fromGzipStream(InputStream input) throws LinkhubException {
+		GZIPInputStream zipReader = null;
+		InputStreamReader is = null;		
+		BufferedReader br = null;
+		StringBuilder sb = null;
+		
+		try {
+			zipReader = new GZIPInputStream(input);
+			is = new InputStreamReader(zipReader, "UTF-8");
+			br = new BufferedReader(is);
+			sb = new StringBuilder();
+	
+			String read = br.readLine();
+	
+			while (read != null) {
+				sb.append(read);
+				read = br.readLine();
+			}
+		} catch (IOException e) {
+			throw new LinkhubException(-99999999, 
+					"Linkhub fromGzipStream func Exception", e);
+		} finally {
+			try {
+				if (br != null) br.close();
+				if (is != null) is.close();
+				if (zipReader != null) zipReader.close();
+			} catch (IOException e) {
+				throw new LinkhubException(-99999999,
+					"Linkhub fromGzipStream func finally close Exception", e);
+			}
+		}
+		
+		return sb.toString();
+	}    
+    
     class PointResult {
     	private double remainPoint;
 
@@ -640,3 +701,4 @@ public class TokenBuilder {
     	public List<String> scope = new ArrayList<String>();
     }
 }
+
