@@ -21,7 +21,7 @@ public class TokenBuilder_Test {
 	@Test
 	public void Build_Success_Test() throws LinkhubException {
 		
-		TokenBuilder tokenBuilder = TokenBuilder.getInstance(LinkID, SecretKey)
+		TokenBuilder tokenBuilder = TokenBuilder.newInstance(LinkID, SecretKey)
 									.ServiceID("POPBILL")
 									.addScope("member")
 									.addScope("110");
@@ -47,7 +47,7 @@ public class TokenBuilder_Test {
 	@Test
 	public void Build_Partner_Success_Test() throws LinkhubException {
 		
-		TokenBuilder tokenBuilder = TokenBuilder.getInstance(LinkID, SecretKey)
+		TokenBuilder tokenBuilder = TokenBuilder.newInstance(LinkID, SecretKey)
 									.ServiceID("JUSOLINK_DEV")
 									.addScope("200");
 	
@@ -70,7 +70,7 @@ public class TokenBuilder_Test {
 	
 	@Test(expected=LinkhubException.class)
 	public void Build_Fail_Test() throws LinkhubException {
-		TokenBuilder tokenBuilder = TokenBuilder.getInstance(LinkID, SecretKey);
+		TokenBuilder tokenBuilder = TokenBuilder.newInstance(LinkID, SecretKey);
 		
 		Token token = tokenBuilder
 						.ServiceID("POPBIL_TEST")
@@ -87,7 +87,7 @@ public class TokenBuilder_Test {
 
 	@Test
 	public void GetBalance_Success_Test() throws LinkhubException {
-		TokenBuilder tokenBuilder = TokenBuilder.getInstance(LinkID, SecretKey);
+		TokenBuilder tokenBuilder = TokenBuilder.newInstance(LinkID, SecretKey);
 		
 		Token token = tokenBuilder
 						.ServiceID("POPBILL_TEST")
@@ -109,7 +109,7 @@ public class TokenBuilder_Test {
 	
 	@Test
 	public void GetPartnerBalance_Success_Test() throws LinkhubException {
-		TokenBuilder tokenBuilder = TokenBuilder.getInstance(LinkID, SecretKey);
+		TokenBuilder tokenBuilder = TokenBuilder.newInstance(LinkID, SecretKey);
 		
 		List<String> scopes = new ArrayList<String>();
 		scopes.add("member");
@@ -134,7 +134,7 @@ public class TokenBuilder_Test {
 	
 	@Test
 	public void GetTime_Success_Test() throws LinkhubException {
-		TokenBuilder tokenBuilder = TokenBuilder.getInstance(LinkID, SecretKey);
+		TokenBuilder tokenBuilder = TokenBuilder.newInstance(LinkID, SecretKey);
 		
 		List<String> scopes = new ArrayList<String>();
 		scopes.add("member");
@@ -159,7 +159,7 @@ public class TokenBuilder_Test {
 
 	@Test
 	public void GetPartnerURL_Success_Test() throws LinkhubException {
-		TokenBuilder tokenBuilder = TokenBuilder.getInstance(LinkID, SecretKey);
+		TokenBuilder tokenBuilder = TokenBuilder.newInstance(LinkID, SecretKey);
 		
 		Token token = tokenBuilder
 						.ServiceID("POPBILL_TEST")

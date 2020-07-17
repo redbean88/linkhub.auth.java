@@ -10,5 +10,5 @@ Add reference by maven
 		<dependency>
 			<groupId>kr.co.linkhub</groupId>
 			<artifactId>linkhub-auth</artifactId>
-			<version>1.2.1</version>
+			<version>1.3.0</version>
 		</dependency>
