@@ -30,6 +30,7 @@ import java.util.zip.GZIPInputStream;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
+import javax.xml.bind.DatatypeConverter;
 
 import com.google.gson.Gson;
 
@@ -580,11 +581,11 @@ public class TokenBuilder {
     }
     
     private static byte[] base64Decode(String input) {
-        return Base64.getDecoder().decode(input);
+        return DatatypeConverter.parseBase64Binary(input);
     }
     
     private static String base64Encode(byte[] input) {
-        return Base64.getEncoder().encodeToString(input);
+        return DatatypeConverter.printBase64Binary(input);
     }
     
     private static byte[] HMacSha1(byte[] key, byte[] input) throws LinkhubException {
