@@ -24,8 +24,10 @@ import java.net.URL;
 import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TimeZone;
 import java.util.zip.GZIPInputStream;
 
 import javax.crypto.Mac;
@@ -56,6 +58,7 @@ public class TokenBuilder {
     
     private String _recentServiceID;
     private List<String> _recentScope;
+    private boolean _useLocalTime;
     
     private TokenBuilder() {
         _gsonParser = new Gson();
@@ -118,6 +121,15 @@ public class TokenBuilder {
     
         return this;
     }
+    /**
+     * 
+     * @param useLocalTimeYN 로컬타임 여부
+     * @return this for method chaining.
+     */
+    public TokenBuilder useLocalTimeYN(boolean useLocalTimeYN) {
+    	this._useLocalTime = useLocalTimeYN;
+    	return this;
+    }
     
     /**
      * 
@@ -156,8 +168,8 @@ public class TokenBuilder {
      * @throws LinkhubException
      */
     public Token build(String AccessID, String forwardedIP) throws LinkhubException {
-        
-        if(_recentServiceID == null || _recentServiceID.isEmpty()) throw new LinkhubException(-99999999,"서비스아이디가 입력되지 않았습니다.");
+       
+    	if(_recentServiceID == null || _recentServiceID.isEmpty()) throw new LinkhubException(-99999999,"서비스아이디가 입력되지 않았습니다.");
         
         HttpURLConnection httpURLConnection;
         String URI = "/" +  _recentServiceID + "/Token";
@@ -177,7 +189,7 @@ public class TokenBuilder {
         byte[] btPostData = PostData.getBytes(Charset.forName("UTF-8"));
         
         String invokeTime = getTime();
-                
+        	               
         String signTarget = "POST\n";
         signTarget += md5Base64(btPostData)  + "\n";
 
@@ -497,7 +509,18 @@ public class TokenBuilder {
      * @return API Server UTCTime
      * @throws LinkhubException
      */
-    public String getTime() throws LinkhubException {        
+    public String getTime() throws LinkhubException {    
+    	
+    	if(_useLocalTime) {
+        	
+        	SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        	format.setTimeZone(TimeZone.getTimeZone("UTC"));
+        	        	
+        	String localTime = format.format(System.currentTimeMillis());
+        	
+        	return localTime;
+    	}
+    	
         HttpURLConnection httpURLConnection;
         String URI = "/Time";
         try {
