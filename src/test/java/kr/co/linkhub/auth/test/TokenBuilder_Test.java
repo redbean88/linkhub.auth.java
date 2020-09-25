@@ -27,8 +27,8 @@ public class TokenBuilder_Test {
 									.addScope("110");
 	
 		Token token = tokenBuilder.build("1234567890");
-		tokenBuilder.setProxyIP("192.168.0.215");
-		tokenBuilder.setProxyPort(8081);
+//		tokenBuilder.setProxyIP("192.168.0.215");
+//		tokenBuilder.setProxyPort(8081);
 		
 		assertNotNull(token);
 		
@@ -54,8 +54,8 @@ public class TokenBuilder_Test {
 									.addScope("200");
 	
 		Token token = tokenBuilder.build();
-		tokenBuilder.setProxyIP("192.168.0.215");
-		tokenBuilder.setProxyPort(8081);
+//		tokenBuilder.setProxyIP("192.168.0.215");
+//		tokenBuilder.setProxyPort(8081);
 		
 		assertNotNull(token);
 		
@@ -99,8 +99,8 @@ public class TokenBuilder_Test {
 						.addScope("110")
 						.build("1234567890");
 		
-		tokenBuilder.setProxyIP("192.168.0.215");
-		tokenBuilder.setProxyPort(8081);
+//		tokenBuilder.setProxyIP("192.168.0.215");
+//		tokenBuilder.setProxyPort(8081);
 		
 		assertNotNull(token);
 		
@@ -127,8 +127,8 @@ public class TokenBuilder_Test {
 							.addScope("110")
 							.build("1234567890");
 		
-		tokenBuilder.setProxyIP("192.168.0.215");
-		tokenBuilder.setProxyPort(8081);
+//		tokenBuilder.setProxyIP("192.168.0.215");
+//		tokenBuilder.setProxyPort(8081);
 		
 		
 		assertNotNull(token);
@@ -156,8 +156,8 @@ public class TokenBuilder_Test {
 							.addScope("110")
 							.build("1234567890");
 		
-		tokenBuilder.setProxyIP("192.168.0.215");
-		tokenBuilder.setProxyPort(8081);
+//		tokenBuilder.setProxyIP("192.168.0.215");
+//		tokenBuilder.setProxyPort(8081);
 		
 		assertNotNull(token);
 		
@@ -194,8 +194,8 @@ public class TokenBuilder_Test {
 						.addScope("110")
 						.build("1234567890");
 		
-		tokenBuilder.setProxyIP("192.168.0.215");
-		tokenBuilder.setProxyPort(8081);
+//		tokenBuilder.setProxyIP("192.168.0.215");
+//		tokenBuilder.setProxyPort(8081);
 		
 		assertNotNull(token);
 		
