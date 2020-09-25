@@ -170,6 +170,19 @@ public class TokenBuilder_Test {
 		System.out.println("Response UTCTime : " + UTCTime);
 		
 	}
+	
+	@Test
+	public void GetLocalTime_Success_Test() throws LinkhubException {
+		TokenBuilder tokenBuilder = TokenBuilder.newInstance(LinkID, SecretKey)
+												.useLocalTimeYN(true);
+				
+		String LocalTime = tokenBuilder.getTime();
+		
+		assertNotNull(LocalTime);
+		
+		System.out.println("Response LocalTime : " + LocalTime);
+			
+	}
 
 	@Test
 	public void GetPartnerURL_Success_Test() throws LinkhubException {
@@ -195,6 +208,7 @@ public class TokenBuilder_Test {
 		System.out.println(url);
 		
 	}
+	
 	
 	/*
 	 * [문제] 예금 만기 금액을 구하는 문제.
