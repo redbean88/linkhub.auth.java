@@ -20,6 +20,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.InetSocketAddress;
+import java.net.Proxy;
+import java.net.Proxy.Type;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.security.MessageDigest;
@@ -50,6 +53,8 @@ public class TokenBuilder {
     private static final String DefaultServiceURL = "https://auth.linkhub.co.kr";
     
     private String _ServiceURL;
+    private String _ProxyIP;
+    private Integer _ProxyPort;
     private String _LinkID;
     private String _SecretKey;
     private Gson _gsonParser;
@@ -77,6 +82,7 @@ public class TokenBuilder {
         _singleTone._LinkID = LinkID;
         _singleTone._SecretKey = SecretKey;
         _singleTone._ServiceURL = DefaultServiceURL;
+        
         return _singleTone;
     }
     
@@ -105,6 +111,14 @@ public class TokenBuilder {
     public TokenBuilder ServiceID(String ServiceID) {
         this._recentServiceID = ServiceID;
         return this;
+    }
+    
+    public void setProxyIP(String IP) {
+    	this._ProxyIP = IP;
+    }
+    
+    public void setProxyPort(int PORT) {
+    	this._ProxyPort = PORT;
     }
     /**
      * 
@@ -164,7 +178,14 @@ public class TokenBuilder {
         
         try {
             URL url = new URL(_ServiceURL + URI);
-            httpURLConnection = (HttpURLConnection) url.openConnection();
+            
+            if(_ProxyIP != null && _ProxyPort != null) {
+            	Proxy prx =  new Proxy(Type.HTTP, new InetSocketAddress(_ProxyIP, _ProxyPort));
+            	httpURLConnection = (HttpURLConnection) url.openConnection(prx);
+            } else {
+            	httpURLConnection = (HttpURLConnection) url.openConnection();
+            }
+            
         } catch (Exception e) {
             throw new LinkhubException(-99999999, "링크허브 서버 접속 실패",e);
         }
@@ -290,7 +311,14 @@ public class TokenBuilder {
         String URI = "/" +  _recentServiceID + "/Point";
         try {
             URL url = new URL(_ServiceURL + URI);
-            httpURLConnection = (HttpURLConnection) url.openConnection();
+            
+            if(_ProxyIP != null && _ProxyPort != null) {
+            	Proxy prx =  new Proxy(Type.HTTP, new InetSocketAddress(_ProxyIP, _ProxyPort));
+            	httpURLConnection = (HttpURLConnection) url.openConnection(prx);
+            } else {
+            	httpURLConnection = (HttpURLConnection) url.openConnection();
+            }
+            
         } catch (Exception e) {
             throw new LinkhubException(-99999999, "링크허브 서버 접속 실패",e);
         }
@@ -363,7 +391,15 @@ public class TokenBuilder {
         String URI = "/" +  _recentServiceID + "/PartnerPoint";
         try {
             URL url = new URL(_ServiceURL + URI);
-            httpURLConnection = (HttpURLConnection) url.openConnection();
+            
+            if(_ProxyIP != null && _ProxyPort != null) {
+            	Proxy prx =  new Proxy(Type.HTTP, new InetSocketAddress(_ProxyIP, _ProxyPort));
+            	httpURLConnection = (HttpURLConnection) url.openConnection(prx);
+            	
+            } else {
+            	httpURLConnection = (HttpURLConnection) url.openConnection();
+            }
+            
         } catch (Exception e) {
             throw new LinkhubException(-99999999, "링크허브 서버 접속 실패",e);
         }
@@ -437,7 +473,14 @@ public class TokenBuilder {
         
         try {
             URL url = new URL(_ServiceURL + URI);
-            httpURLConnection = (HttpURLConnection) url.openConnection();
+            
+            if(_ProxyIP != null && _ProxyPort != null) {
+            	Proxy prx =  new Proxy(Type.HTTP, new InetSocketAddress(_ProxyIP, _ProxyPort));
+            	httpURLConnection = (HttpURLConnection) url.openConnection(prx);
+            } else {
+            	httpURLConnection = (HttpURLConnection) url.openConnection();
+            }
+            
         } catch (Exception e) {
             throw new LinkhubException(-99999999, "링크허브 서버 접속 실패",e);
         }
@@ -502,7 +545,14 @@ public class TokenBuilder {
         String URI = "/Time";
         try {
             URL url = new URL(_ServiceURL + URI);
-            httpURLConnection = (HttpURLConnection) url.openConnection();
+            
+            if(_ProxyIP != null && _ProxyPort != null) {
+            	Proxy prx =  new Proxy(Type.HTTP, new InetSocketAddress(_ProxyIP, _ProxyPort));
+            	httpURLConnection = (HttpURLConnection) url.openConnection(prx);
+            } else {
+            	httpURLConnection = (HttpURLConnection) url.openConnection();
+            }
+            
         } catch (Exception e) {
             throw new LinkhubException(-99999999, "링크허브 서버 접속 실패",e);
         }
